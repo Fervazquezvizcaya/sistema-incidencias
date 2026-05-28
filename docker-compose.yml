@@ -1,0 +1,53 @@
+services:
+  # Base de Datos Global (MySQL 8)
+  db:
+    image: mysql:8.0
+    container_name: panel-db-global
+    restart: always
+    environment:
+      MYSQL_DATABASE: vinculacion_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/data:/var/lib/mysql
+    networks:
+      - vinculacion_network
+
+  # Módulo 1: Autenticación (ms-auth) - Puerto 3000
+  ms-auth:
+    build: ./ms-auth
+    container_name: ms-auth-container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - vinculacion_network
+
+  # Módulo 2: Registro Público (ms-registro) - Puerto 3001
+  ms-registro:
+    build: ././ms-registro
+    container_name: ms-registro-container
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    networks:
+      - vinculacion_network
+
+  # Módulo 3: Seguimiento Administrativo (ms-seguimiento) - Puerto 3002
+  ms-seguimiento:
+    build: ./ms-seguimiento
+    container_name: ms-seguimiento-container
+    ports:
+      - "3002:3000"
+    depends_on:
+      - db
+    networks:
+      - vinculacion_network
+
+# Red interna de Docker para comunicación entre microservicios
+networks:
+  vinculacion_network:
+    driver: bridge

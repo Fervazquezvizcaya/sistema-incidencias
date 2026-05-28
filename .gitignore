@@ -1,0 +1,22 @@
+# Dependencias de Node
+node_modules/
+
+# Archivos compilados de Next.js
+.next/
+out/
+build/
+
+# Variables de entorno (¡NUNCA subas tus contraseñas de BD!)
+.env
+.env.local
+
+# Datos de la base de datos de Docker (para no subir la BD entera)
+mysql_data/
+db_data/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+database/data/
+*.sock
